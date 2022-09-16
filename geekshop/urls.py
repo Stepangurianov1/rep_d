@@ -29,6 +29,7 @@ urlpatterns = [
     path('users/', include('authapp.urls', namespace='authapp')),
     path('baskets/', include('baskets.urls', namespace='baskets')),
     path('admins/', include('admins.urls', namespace='admins')),
+    path('ordersapp/', include('ordersapp.urls', namespace='ordersapp')),
 
     # path('language_new/', include('django.conf.urls',namespace='language_new')),
     # path('lang/', set_language, name='language'),
