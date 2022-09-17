@@ -25,24 +25,23 @@ class RegisterListView(FormView, BaseClassContextMixin):
     template_name = 'authapp/register.html'
     form_class = UserRegisterForm
     title = 'GeekShop - Регистрация'
-    success_url = reverse_lazy('auth:login')
+    success_url = reverse_lazy('authapp:login')
 
     def post(self, request, *args, **kwargs):
 
         form = self.form_class(data=request.POST)
         if form.is_valid():
-            user = form.save()
-            if self.send_verify_link(user):
-                messages.set_level(request, messages.SUCCESS)
-                messages.success(request, 'Вы успешно зарегистрировались!')
-                return HttpResponseRedirect(reverse('authapp:login'))
-            else:
-                messages.set_level(request, messages.ERROR)
-                messages.error(request, form.errors)
+            form.save()
+            messages.set_level(request, messages.SUCCESS)
+            messages.success(request, 'Вы успешно зарегистрировались!')
+            #
+            # else:
+            #     messages.set_level(request, messages.ERROR)
+            #     messages.error(request, form.errors)
         else:
             messages.set_level(request, messages.ERROR)
             messages.error(request, form.errors)
-        return render(request, self.template_name, {'form': form})
+        return HttpResponseRedirect(self.get_success_url())
 
     def send_verify_link(self, user):
         verify_link = reverse('authapp:verify', args=[user.email, user.activation_key])
